@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 // Define a function to establish a connection to the database
 async function connectToDatabase() {
   try {
-    await mongoose.connect("mongodb://0.0.0.0:27017/flight", {
+    await mongoose.connect(process.env.MONGODB_CONNECT_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
