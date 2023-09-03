@@ -47,7 +47,10 @@ app.use(express.urlencoded({ extended: true }));
 // Enable CORS with specified options
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://AeroFinder.onrender.com"],
+    origin: [
+      "https://aerofinder.onrender.com",
+      "https://aeroFinder.onrender.com/",
+    ],
     credentials: true,
   })
 );
