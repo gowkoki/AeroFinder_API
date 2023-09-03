@@ -54,7 +54,7 @@ router.get("/route", async (req, res) => {
     if (filteredFlights.length > 0) {
       const flightNumber = filteredFlights[0].number;
       // Fetch detailed flight data using the flightNumber
-      let endpoint = `http://localhost:8000/home?flightNumber=${flightNumber}&departDate=${departDate}`;
+      let endpoint = `https://aerofinder-api.onrender.com/home?flightNumber=${flightNumber}&departDate=${departDate}`;
       const innerResponse = await axios.get(endpoint);
       res.json({ data: innerResponse.data });
     } else {
