@@ -35,13 +35,7 @@ router.post("/notify", async (req, res) => {
       const twilioResponse1 = await sendNotification(message, mobile, email);
 
       if (mapLink !== "") {
-        // Encode the URL components
-        const encodedURL = encodeURIComponent(mapLink);
-        const twilioResponse2 = await sendNotification(
-          encodedURL,
-          mobile,
-          email
-        );
+        const twilioResponse2 = await sendNotification(mapLink, mobile, email);
         if (twilioResponse2) {
           console.log("maplink has been sent successfully");
         } else {
