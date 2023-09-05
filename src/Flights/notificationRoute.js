@@ -34,14 +34,14 @@ router.post("/notify", async (req, res) => {
       //send the intitial notification message and map link
       const twilioResponse1 = await sendNotification(message, mobile, email);
 
-      // if (mapLink !== "") {
-      //   const twilioResponse2 = await sendNotification(mapLink, mobile, email);
-      //   if (twilioResponse2) {
-      //     console.log("maplink has been sent successfully");
-      //   } else {
-      //     console.log("Failed to sent maplink");
-      //   }
-      // }
+      if (mapLink !== "") {
+        const twilioResponse2 = await sendNotification(mapLink, mobile, email);
+        if (twilioResponse2) {
+          console.log("maplink has been sent successfully");
+        } else {
+          console.log("Failed to sent maplink");
+        }
+      }
 
       // Temporarily store the flight data in the DB
       const existingFlightData = await db.FlightData.findOne({ flightNumber });
@@ -355,16 +355,26 @@ router.post("/incomingMessage", async (req, res) => {
   const userMessage = req.body.Body;
   const lowerCaseUserMessage = userMessage.toLowerCase();
   const userMobileNumber = req.body.From;
-  //console.log("Ending", userMobileNumber);
-  if (lowerCaseUserMessage.includes("stop")) {
+
+  if (lowerCaseUserMessage.includes("end")) {
     scheduledJob.stop();
     console.log("Cron job has been stopped.");
 
-    // Delete the flight data from the database where flightNumber matches
-    //await db.FlightData.deleteOne({ flightNumber });
+    // Retrieve the user's email address associated with the mobile number
+    const userRecord = await db.Notification.findOne({
+      mobile: userMobileNumber,
+    });
+    if (userRecord) {
+      const userEmail = userRecord.email;
+      const flightNumber = userRecord.flightNumber;
 
-    const confirmationMessage = "Thank you for using AeroFinder";
-    await sendNotification(confirmationMessage, userMobileNumber);
+      // Send the final message to the user via WhatsApp and email
+      const finalMessage =
+        "Thank you for using AeroFinder. For more information visit AeroFinder app";
+      await sendNotification(finalMessage, userMobileNumber, userEmail);
+      await db.FlightData.deleteOne({ flightNumber: flightNumber });
+      await db.Notification.deleteOne({ mobile: userMobileNumber });
+    }
   }
   res.end();
 });
