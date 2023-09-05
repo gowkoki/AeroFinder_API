@@ -356,6 +356,8 @@ router.post("/incomingMessage", async (req, res) => {
   const lowerCaseUserMessage = userMessage.toLowerCase();
   const userMobileNumber = req.body.From;
 
+  console.log(`Received message from ${userMobileNumber}: ${userMessage}`);
+
   if (lowerCaseUserMessage.includes("end")) {
     scheduledJob.stop();
     console.log("Cron job has been stopped.");
