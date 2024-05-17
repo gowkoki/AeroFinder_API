@@ -8,7 +8,7 @@ router.get("/airlines", async (req, res) => {
     method: "GET",
     url: "https://flight-radar1.p.rapidapi.com/airlines/list",
     headers: {
-      "X-RapidAPI-Key": process.env.FLIGHTDATA_API_KEY,
+      "X-RapidAPI-Key": process.env.GATE_LOCATION_API_KEY,
       "X-RapidAPI-Host": "flight-radar1.p.rapidapi.com",
     },
   };
@@ -38,7 +38,7 @@ router.get("/airports", async (req, res) => {
     method: "GET",
     url: "https://flight-radar1.p.rapidapi.com/airports/list",
     headers: {
-      "X-RapidAPI-Key": process.env.FLIGHTDATA_API_KEY,
+      "X-RapidAPI-Key": process.env.GATE_LOCATION_API_KEY,
       "X-RapidAPI-Host": "flight-radar1.p.rapidapi.com",
     },
   };
